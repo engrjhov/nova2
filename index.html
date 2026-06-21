@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA Space Planning · Philippines Retail Map</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div id="boot-overlay" class="boot-overlay">
+        <div class="boot-box">
+            <div class="boot-header">
+                <span class="boot-title">SYSTEM BOOT: NOVA INTEL</span>
+                <span class="boot-version">v4.0.26</span>
+            </div>
+            <div class="boot-loader-track">
+                <div id="boot-loader-bar" class="boot-loader-bar" style="width: 0%"></div>
+            </div>
+            <div class="boot-status-row">
+                <span id="boot-status-text" class="boot-status-text">Initializing core matrix...</span>
+                <span id="boot-status-percentage" class="boot-status-percentage">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="ui-layer" class="ui-layer" style="display: none;">
+        
+        <header class="top-hud">
+            <div class="brand-block">
+                <div class="brand-logo"></div>
+                <div class="brand-text">
+                    <h1>NOVA</h1>
+                    <span>SPACE PLANNING SYSTEM</span>
+                </div>
+            </div>
+            <nav class="breadcrumb-container">
+                <span class="bc-node clickable" id="bc-root">PHILIPPINES</span>
+                <span class="bc-separator" id="bc-sep1">/</span>
+                <span class="bc-node clickable" id="bc-group"></span>
+                <span class="bc-separator" id="bc-sep2">/</span>
+                <span class="bc-node clickable" id="bc-region"></span>
+                <span class="bc-separator" id="bc-sep3">/</span>
+                <span class="bc-node" id="bc-store"></span>
+            </nav>
+            <div class="header-right-meta">
+                <div class="feed-pill">
+                    <span class="pulse-dot"></span>
+                    <span class="feed-label">LIVE DATALINK</span>
+                </div>
+                <div class="system-clock" id="sys-clock">00:00:00 UTC</div>
+            </div>
+        </header>
+
+        <section class="panel-left glass-panel">
+            <div class="panel-header">
+                <h2>ANALYTICS OVERVIEW</h2>
+                <span class="panel-subtitle" id="hierarchy-label">National Hierarchy</span>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="m-label">TOTAL SITES</span>
+                    <span class="m-value" id="m-total">00</span>
+                </div>
+                <div class="metric-card status-border-approved">
+                    <span class="m-label">APPROVED</span>
+                    <span class="m-value text-approved" id="m-approved">00</span>
+                </div>
+                <div class="metric-card status-border-pending">
+                    <span class="m-label">PENDING</span>
+                    <span class="m-value text-pending" id="m-pending">00</span>
+                </div>
+                <div class="metric-card status-border-issue">
+                    <span class="m-label">ALERT/ISSUE</span>
+                    <span class="m-value text-issue" id="m-issue">00</span>
+                </div>
+            </div>
+
+            <div class="drilldown-container">
+                <div class="list-header-row">
+                    <span id="drilldown-title">NAVIGATIONAL HIERARCHY</span>
+                    <button class="btn-back" id="btn-back-global" style="display: none;">↑ UP ONE LEVEL</button>
+                </div>
+                <div class="drilldown-scroll" id="drilldown-list">
+                    </div>
+            </div>
+
+            <div class="legend-footer">
+                <div class="legend-item"><span class="dot bg-approved"></span>Approved</div>
+                <div class="legend-item"><span class="dot bg-pending"></span>Pending</div>
+                <div class="legend-item"><span class="dot bg-issue"></span>Action Required</div>
+            </div>
+        </section>
+
+        <section class="panel-right glass-panel" id="detail-drawer">
+            <button class="close-drawer-btn" id="btn-close-drawer">×</button>
+            <div class="drawer-scroll-wrapper" id="drawer-content-target">
+                </div>
+        </section>
+
+        <footer class="bottom-hud glass-panel">
+            <div class="timeline-meta">
+                <h3>HISTORICAL SIMULATION TRACK</h3>
+                <p>Scrub engine coordinates to analyze historical lifecycle shifts</p>
+            </div>
+            <div class="timeline-control-block">
+                <div class="timeline-labels">
+                    <span class="tl-tick" data-idx="0">JAN</span>
+                    <span class="tl-tick" data-idx="1">FEB</span>
+                    <span class="tl-tick" data-idx="2">MAR</span>
+                    <span class="tl-tick" data-idx="3">APR</span>
+                    <span class="tl-tick" data-idx="4">MAY</span>
+                    <span class="tl-tick" data-idx="5">JUN</span>
+                </div>
+                <input type="range" min="0" max="5" value="5" class="timeline-slider" id="time-scrubber">
+            </div>
+        </footer>
+    </div>
+
+    <div class="lightbox-modal" id="lightbox-modal" style="display: none;">
+        <div class="lightbox-card glass-panel">
+            <button class="lightbox-close" id="btn-close-lightbox">×</button>
+            <h2 id="lightbox-store-title">STORE FRONT GALLERY</h2>
+            <div class="lightbox-tabs">
+                <button class="tab-btn active" data-tab="front">STORE FRONT</button>
+                <button class="tab-btn" data-tab="display">DISPLAY AREA</button>
+                <button class="tab-btn" data-tab="shelf">CATEGORY SHELF</button>
+                <button class="tab-btn" data-tab="planogram">PLANOGRAM</button>
+            </div>
+            <div class="lightbox-viewport">
+                <div class="placeholder-graphic-canvas">
+                    <div class="crosshairs"></div>
+                    <div class="telemetry-readout" id="lightbox-tab-label">IMAGE STREAM SOURCE: SECURE_FEED_A // NO_REAL_IMG</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
